@@ -18,7 +18,7 @@ public class PersonsDao {
 
     private static PersonsDao instance;
     private static DataSource dataSource;
-    private static Connection connection; 
+    private static Connection connection;
 
     private static Logger logger = Logger.getLogger(PersonsDao.class);
 
