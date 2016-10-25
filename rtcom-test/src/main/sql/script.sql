@@ -1,14 +1,20 @@
+--DB--
+create table cities(id number, name varchar(30));
+create table persons(id number,name varchar(30),patronymic varchar(30),surname varchar(30),city_id number);
+create table cars(id number,model varchar(30),num varchar(12),color varchar(20),type varchar(2), owner_id number);
+
+
 --DATA--
-insert into cars(id,model,num,color,class)values(1,'AUDI','x123xx196RU','RED','C');
-insert into cars(id,model,num,color,class)values(2,'AUDI','a234et174RU','WHITE','D');
-insert into cars(id,model,num,color,class)values(3,'VW','c426ax750RU','BLACK','B');
-insert into cars(id,model,num,color,class)values(4,'MB','a404aa123RU','GREY','S');
-insert into cars(id,model,num,color,class)values(5,'VAZ','a109mm66RU','YELLOW','B');
-insert into cars(id,model,num,color,class)values(10,'RENAULT','h239kp96RU','GREEN','B');
-insert into cars(id,model,num,color,class)values(9,'PEUGEOT','o120ee96RU','BLACK','B');
-insert into cars(id,model,num,color,class)values(8,'KIA','x450bk96RU','WHITE','C');
-insert into cars(id,model,num,color,class)values(7,'FORD','b098yp196RU','GREY','C');
-insert into cars(id,model,num,color,class)values(6,'SKODA','a478bx196RU','WHITE','C');
+insert into cars(id,model,num,color,type,owner_id)values(1,'AUDI','x123xx196RU','RED','C',1);
+insert into cars(id,model,num,color,type,owner_id)values(2,'AUDI','a234et174RU','WHITE','D',1);
+insert into cars(id,model,num,color,type,owner_id)values(3,'VW','c426ax750RU','BLACK','B',2);
+insert into cars(id,model,num,color,type,owner_id)values(4,'MB','a404aa123RU','GREY','S',3);
+insert into cars(id,model,num,color,type,owner_id)values(5,'VAZ','a109mm66RU','YELLOW','B',10);
+insert into cars(id,model,num,color,type,owner_id)values(10,'RENAULT','h239kp96RU','GREEN','B',10);
+insert into cars(id,model,num,color,type,owner_id)values(9,'PEUGEOT','o120ee96RU','BLACK','B',5);
+insert into cars(id,model,num,color,type,owner_id)values(8,'KIA','x450bk96RU','WHITE','C',6);
+insert into cars(id,model,num,color,type,owner_id)values(7,'FORD','b098yp196RU','GREY','C',7);
+insert into cars(id,model,num,color,type,owner_id)values(6,'SKODA','a478bx196RU','WHITE','C',8);
  
 insert into cities(id,name)values(1,'Yekaterinburg');
 insert into cities(id,name)values(2,'Moscow');
@@ -21,16 +27,16 @@ insert into cities(id,name)values(8,'Kazan');
 insert into cities(id,name)values(9,'Vladivostok');
 insert into cities(id,name)values(10,'Norilsk');
  
-insert into persons(id,name,patronymic,surname,car_id,city_id)values(1,'ivan','ivanovich','chehov',1,10);
-insert into persons(id,name,patronymic,surname,car_id,city_id)values(2,'olga','sergeevna','zhukova',5,1);
-insert into persons(id,name,patronymic,surname,car_id,city_id)values(3,'anton','petrovich','borodach',8,1);
-insert into persons(id,name,patronymic,surname,car_id,city_id)values(4,'sergey','petrovich','chehov',3,6);
-insert into persons(id,name,patronymic,surname,car_id,city_id)values(5,'olga','andreevna','ivanova',7,4);
-insert into persons(id,name,patronymic,surname,car_id,city_id)values(6,'evgeniy','aleksandrovich','kobylin',2,9);
-insert into persons(id,name,patronymic,surname,car_id,city_id)values(7,'anna','vladimirovna','frolova',6,1);
-insert into persons(id,name,patronymic,surname,car_id,city_id)values(8,'denis','aleksandrovich','potapov',4,7);
-insert into persons(id,name,patronymic,surname,car_id,city_id)values(9,'andrey','vasilyevich','bagaev',9,3);
-insert into persons(id,name,patronymic,surname,car_id,city_id)values(10,'yuliya','stepanovna','chernova',10,8);
+insert into persons(id,name,patronymic,surname,city_id)values(1,'ivan','ivanovich','chehov',10);
+insert into persons(id,name,patronymic,surname,city_id)values(2,'olga','sergeevna','zhukova',1);
+insert into persons(id,name,patronymic,surname,city_id)values(3,'anton','petrovich','borodach',1);
+insert into persons(id,name,patronymic,surname,city_id)values(4,'sergey','petrovich','chehov',6);
+insert into persons(id,name,patronymic,surname,city_id)values(5,'olga','andreevna','ivanova',4);
+insert into persons(id,name,patronymic,surname,city_id)values(6,'evgeniy','aleksandrovich','kobylin',9);
+insert into persons(id,name,patronymic,surname,city_id)values(7,'anna','vladimirovna','frolova',1);
+insert into persons(id,name,patronymic,surname,city_id)values(8,'denis','aleksandrovich','potapov',7);
+insert into persons(id,name,patronymic,surname,city_id)values(9,'andrey','vasilyevich','bagaev',3);
+insert into persons(id,name,patronymic,surname,city_id)values(10,'yuliya','stepanovna','chernova',8);
 
 
 -- SECURITY --

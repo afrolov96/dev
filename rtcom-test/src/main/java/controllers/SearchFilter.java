@@ -1,6 +1,6 @@
 package controllers;
 
-import model.AuthDao;
+import models.AuthDao;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -14,22 +14,23 @@ import java.io.IOException;
 public class SearchFilter implements Filter {
     static Logger logger = Logger.getLogger(SearchFilter.class);
 
-    public void init(FilterConfig filterConfig) throws ServletException {    }
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpSession httpSession = ((HttpServletRequest) servletRequest).getSession(false);
         String username = servletRequest.getParameter("username");
         String password = servletRequest.getParameter("password");
 
-        if(httpSession != null & httpSession.getAttribute("sessionUser") != null){
+        if (httpSession != null & httpSession.getAttribute("sessionUser") != null) {
             logger.info("Auth READY for pair user/pass - " + username + " / " + password + ", sessionUser = " + httpSession.getAttribute("sessionUser"));
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
 
-            if(username == null || password == null){
+            if (username == null || password == null) {
                 servletRequest.setAttribute("msg", "Login error.");
                 logger.info("User or Password is empty...");
-                ((HttpServletResponse)servletResponse).sendRedirect("login.jsp");
+                ((HttpServletResponse) servletResponse).sendRedirect("login.jsp");
             } else {
 
                 if (AuthDao.getInstance().checkAuth(username, password)) {
@@ -40,11 +41,12 @@ public class SearchFilter implements Filter {
 
                     logger.info("Auth FAIL for pair user/pass - " + username + " / " + password);
                     servletRequest.setAttribute("msg", "Login error.");
-                    ((HttpServletResponse)servletResponse).sendRedirect("login.jsp");
+                    ((HttpServletResponse) servletResponse).sendRedirect("login.jsp");
                 }
             }
         }
     }
 
-    public void destroy() {    }
+    public void destroy() {
+    }
 }

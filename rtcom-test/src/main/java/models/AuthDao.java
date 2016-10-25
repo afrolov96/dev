@@ -1,4 +1,4 @@
-package model;
+package models;
 
 import org.apache.log4j.Logger;
 
@@ -17,10 +17,11 @@ public class AuthDao {
     private static Connection connection;
     private static Logger logger = Logger.getLogger(AuthDao.class);
 
-    private AuthDao(){}
+    private AuthDao() {
+    }
 
-    public static synchronized AuthDao getInstance(){
-        if(instance == null) {
+    public static synchronized AuthDao getInstance() {
+        if (instance == null) {
             try {
                 instance = new AuthDao();
                 Context ctx = new InitialContext();
@@ -35,14 +36,14 @@ public class AuthDao {
         return instance;
     }
 
-    public static synchronized void destroyInstance(){
+    public static synchronized void destroyInstance() {
         instance = null;
         logger.info("AuthDao is null...");
     }
 
-    public boolean checkAuth(String user, String password){
+    public boolean checkAuth(String user, String password) {
         boolean result = false;
-        try{
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from users where user_name=? and password=?");
             preparedStatement.setString(1, user);
             preparedStatement.setString(2, password);

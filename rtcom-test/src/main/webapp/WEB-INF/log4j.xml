@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false"
-                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                     xsi:schemaLocation="http://jakarta.apache.org/log4j/ ">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
     <appender name="filelogger" class="org.apache.log4j.RollingFileAppender">
         <param name="File" value="${catalina.home}/logs/rtcom.log"/>
         <param name="Append" value="true"/>
@@ -15,13 +13,13 @@
     </appender>
 
     <logger name="ru.test.rtcom" additivity="false">
-        <level value="DEBUG"/>
+        <level value="DEBUG" />
         <appender-ref ref="filelogger"/>
     </logger>
 
     <root>
-        <level value="debug"/>
-        <appender-ref ref="filelogger"/>
+        <level value="debug" />
+        <appender-ref ref="filelogger" />
     </root>
 
 </log4j:configuration>

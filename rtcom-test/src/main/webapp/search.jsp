@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; ISO-8859-1" pageEncoding="UTF-8" %>
 <%@ page session="true" %>
 <%@ page import="java.util.Enumeration" %>
-<%@ page import = "java.util.Map" %>
+<%@ page import="java.util.Map" %>
 
 <script src="lib/jquery.min.js"></script>
 <script>
-    $(document).ready(function(){
-        $('#submit').click(function(){
+    $(document).ready(function () {
+        $('#submit').click(function () {
             var person_params = [];
-            $('input[id^=persons_]').each(function(){
+            $('input[id^=persons_]').each(function () {
                 var key = $(this).attr('id');
                 var val = $(this).val();
-                if(val != ''){
+                if (val != '') {
                     item = {};
                     item [key] = val;
                     person_params.push(item);
@@ -19,10 +19,10 @@
             });
 
             var city_params = [];
-            $('input[id^=cities_]').each(function(){
+            $('input[id^=cities_]').each(function () {
                 var key = $(this).attr('id');
                 var val = $(this).val();
-                if(val != ''){
+                if (val != '') {
                     item = {};
                     item [key] = val;
                     city_params.push(item);
@@ -30,21 +30,23 @@
             });
 
             var car_params = [];
-            $('input[id^=cars_]').each(function(){
+            $('input[id^=cars_]').each(function () {
                 var key = $(this).attr('id');
                 var val = $(this).val();
-                if(val != ''){
+                if (val != '') {
                     item = {};
                     item [key] = val;
                     car_params.push(item);
                 }
             });
 
-            if(person_params.length != 0 || city_params.length != 0 || car_params.length != 0){
-                $.post('ActionServlet', {person_params : JSON.stringify(person_params),
-                                         city_params : JSON.stringify(city_params),
-                                         car_params : JSON.stringify(car_params)})
-                .done(function(data) { $('#searchResult').html(data) })
+            if (person_params.length != 0 || city_params.length != 0 || car_params.length != 0) {
+                $.post('ActionServlet', {person_params: JSON.stringify(person_params),
+                    city_params: JSON.stringify(city_params),
+                    car_params: JSON.stringify(car_params)})
+                        .done(function (data) {
+                            $('#searchResult').html(data)
+                        })
             } else {
                 $('#searchResult').html("</br>Укажите условия поиска");
             }
@@ -75,14 +77,17 @@
 <form action="Logout" method="post">
     <input type="submit" value="Выйти">
 </form>
- 
+
 <br>
+
 <h1>Поиск людей</h1>
 </head>
 <body>
 <table>
     <tr>
-        <td>Фамилия</td><td>Имя</td><td>Отчество</td>
+        <td>Фамилия</td>
+        <td>Имя</td>
+        <td>Отчество</td>
     </tr>
     <tr>
         <td><input type="text" id="persons_surname"/></td>
@@ -90,11 +95,16 @@
         <td><input type="text" id="persons_patronymic"/></td>
     </tr>
     <tr>
-        <td>Город</td></tr>
-        <td><input type="text" id="cities_name"/></td></tr>
+        <td>Город</td>
+    </tr>
+    <td><input type="text" id="cities_name"/></td>
+    </tr>
     </tr>
     <tr>
-        <td>Автомобиль</td><td>Номер</td><td>Цвет</td><td>Класс</td>
+        <td>Автомобиль</td>
+        <td>Номер</td>
+        <td>Цвет</td>
+        <td>Класс</td>
     </tr>
     <tr>
         <td><input type="text" id="cars_model"/></td>
@@ -105,6 +115,7 @@
 </table>
 <input type="button" id="submit" value="Найти"/>
 <br>
+
 <div id="searchResult"></div>
 </body>
 </html>

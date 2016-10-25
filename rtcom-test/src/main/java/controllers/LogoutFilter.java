@@ -13,17 +13,19 @@ import java.io.IOException;
 public class LogoutFilter implements Filter {
     static Logger logger = Logger.getLogger(LogoutFilter.class);
 
-    public void init(FilterConfig filterConfig) throws ServletException {    }
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpSession httpSession = ((HttpServletRequest) servletRequest).getSession(false);
 
-        if(httpSession != null){
+        if (httpSession != null) {
             httpSession.invalidate();
         }
         logger.info("User was logout...");
-        ((HttpServletResponse)servletResponse).sendRedirect("login.jsp");
+        ((HttpServletResponse) servletResponse).sendRedirect("login.jsp");
     }
 
-    public void destroy() {    }
+    public void destroy() {
+    }
 }

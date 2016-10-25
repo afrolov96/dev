@@ -1,4 +1,4 @@
-package model;
+package models;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,10 +23,11 @@ public class PersonsDao {
 
     private static Logger logger = Logger.getLogger(PersonsDao.class);
 
-    private PersonsDao(){}
+    private PersonsDao() {
+    }
 
-    public  static synchronized PersonsDao getInstance(){
-        if(instance == null) {
+    public static synchronized PersonsDao getInstance() {
+        if (instance == null) {
             try {
                 instance = new PersonsDao();
                 Context ctx = new InitialContext();
@@ -41,19 +42,20 @@ public class PersonsDao {
         return instance;
     }
 
-    public static synchronized void destroyInstance(){
+    public static synchronized void destroyInstance() {
         instance = null;
         logger.info("PersonsDao is null...");
     }
 
-    public String constructClause(String mainQuery, String params, int clauseKey){
+    public String constructClause(String mainQuery, String params, int clauseKey) {
         StringBuilder query = new StringBuilder();
         query.append(mainQuery);
 
-        Map<String, String>[] map = new Gson().fromJson(params, new TypeToken<Map<String, String>[]>() {}.getType());
+        Map<String, String>[] map = new Gson().fromJson(params, new TypeToken<Map<String, String>[]>() {
+        }.getType());
         int k = map.length;
-        if(k > 0) {
-            switch (clauseKey){
+        if (k > 0) {
+            switch (clauseKey) {
                 case KEY_WHERE:
                     query.append(" where ");
                     break;
@@ -75,7 +77,7 @@ public class PersonsDao {
         return query.toString();
     }
 
-    public List<Person> getPersonsInfo(String person_params, String city_params, String car_params){
+    public List<Person> getPersonsInfo(String person_params, String city_params, String car_params) {
         ArrayList<Person> persons = new ArrayList<Person>();
 
         try {
@@ -95,10 +97,6 @@ public class PersonsDao {
                 person.setPatronymic(rs.getString("patronymic"));
                 person.setSurname(rs.getString("surname"));
                 person.setCity(rs.getString("city"));
-                person.setCar(rs.getString("car"));
-                person.setCar_num(rs.getString("car_num"));
-                person.setCar_color(rs.getString("car_color"));
-                person.setCar_class(rs.getString("car_class"));
                 persons.add(person);
             }
             rs.close();

@@ -1,10 +1,9 @@
 package controllers;
 
-import model.PersonsDao;
-import model.Person;
+import models.PersonsDao;
+import models.Person;
 import org.apache.log4j.Logger;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
