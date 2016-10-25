@@ -1,14 +1,15 @@
 package controllers;
 
-import models.PersonsDao;
-import models.Person;
+import dao.PersonsDao;
+import models.*;
 import org.apache.log4j.Logger;
+import util.ParamsConverter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 @WebServlet("/ActionServlet")
 public class ActionServlet extends HttpServlet {
@@ -19,17 +20,15 @@ public class ActionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
-        String person_params = req.getParameter("person_params");
-        String city_params = req.getParameter("city_params");
-        String car_params = req.getParameter("car_params");
+        String params = req.getParameter("params");
 
         logger.info("Invoke getPersonsInfo request...");
 
-        ArrayList<Person> persons = (ArrayList<Person>) PersonsDao.getInstance().getPersonsInfo(person_params, city_params, car_params);
-        if (persons.size() != 0) {
-            for (Person person : persons) {
-                resp.getWriter().write("</br>" + person.toString());
-            }
+        ParamsConverter converter = new ParamsConverter(params);
+
+        HashMap<String, City> result = PersonsDao.getInstance().getData(converter);
+        if (result.size() != 0) {
+            resp.getWriter().write("</br>" + result.toString());
         } else {
             resp.getWriter().write("</br>Data not found!");
         }

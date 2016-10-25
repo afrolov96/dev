@@ -2,35 +2,17 @@ package models;
 
 
 public class Car {
-    private Integer id;
-    private String model;
+    private String name;
     private String number;
     private String color;
-    private String type;
-    private Integer owner;
+    private String size;
 
-    public Integer getOwner() {
-        return owner;
+    public String getName() {
+        return name;
     }
 
-    public void setOwner(Integer owner) {
-        this.owner = owner;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getNumber() {
@@ -49,11 +31,21 @@ public class Car {
         this.color = color;
     }
 
-    public String getType() {
-        return type;
+    public String getSize() {
+        return size;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "name='" + name + '\'' +
+                ", number='" + number + '\'' +
+                ", color='" + color + '\'' +
+                ", size='" + size + '\'' +
+                '}';
     }
 }

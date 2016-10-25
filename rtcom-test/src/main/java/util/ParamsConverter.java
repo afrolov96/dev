@@ -1,4 +1,4 @@
-package models;
+package util;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -6,11 +6,11 @@ import com.google.gson.reflect.TypeToken;
 import java.util.Map;
 
 
-public class Converter {
+public class ParamsConverter {
     private String[] keys;
     private String[] values;
 
-    public Converter(String params) {
+    public ParamsConverter(String params) {
         Map<String, String>[] map = new Gson().fromJson(params, new TypeToken<Map<String, String>[]>() {
         }.getType());
         keys = new String[map.length];
@@ -26,11 +26,11 @@ public class Converter {
         }
     }
 
-    public void setKeys(String[] keys) {
-        this.keys = keys;
+    public String[] getKeys() {
+        return keys;
     }
 
-    public void setValues(String[] values) {
-        this.values = values;
+    public String[] getValues() {
+        return values;
     }
 }

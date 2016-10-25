@@ -1,6 +1,6 @@
 package controllers;
 
-import models.AuthDao;
+import dao.AuthDao;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;

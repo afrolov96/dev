@@ -2,29 +2,20 @@ package models;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Person {
-    private Integer id;
+    private int id;
     private String name;
     private String patronymic;
     private String surname;
-    private String city;
+    private HashMap<String, Car> carsMap = new HashMap<String, Car>();
 
-    public ArrayList<Car> getCars() {
-        return cars;
-    }
-
-    public void setCars(ArrayList<Car> cars) {
-        this.cars = cars;
-    }
-
-    private ArrayList<Car> cars = new ArrayList<Car>();
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -52,12 +43,22 @@ public class Person {
         this.surname = surname;
     }
 
-    public String getCity() {
-        return city;
+    public HashMap<String, Car> getCarsMap() {
+        return carsMap;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCarsMap(HashMap<String, Car> carsMap) {
+        this.carsMap = carsMap;
     }
 
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", surname='" + surname + '\'' +
+                ", carsMap=" + carsMap +
+                '}';
+    }
 }

@@ -1,20 +1,20 @@
 --DB--
-create table cities(id number, name varchar(30));
-create table persons(id number,name varchar(30),patronymic varchar(30),surname varchar(30),city_id number);
-create table cars(id number,model varchar(30),num varchar(12),color varchar(20),type varchar(2), owner_id number);
+create table cities(id integer, name varchar(30));
+create table persons(id integer, name varchar(30), patronymic varchar(30), surname varchar(30), city_id integer);
+create table cars(id integer, name varchar(30), num varchar(12), color varchar(20), size varchar(3), owner_id integer);
 
 
 --DATA--
-insert into cars(id,model,num,color,type,owner_id)values(1,'AUDI','x123xx196RU','RED','C',1);
-insert into cars(id,model,num,color,type,owner_id)values(2,'AUDI','a234et174RU','WHITE','D',1);
-insert into cars(id,model,num,color,type,owner_id)values(3,'VW','c426ax750RU','BLACK','B',2);
-insert into cars(id,model,num,color,type,owner_id)values(4,'MB','a404aa123RU','GREY','S',3);
-insert into cars(id,model,num,color,type,owner_id)values(5,'VAZ','a109mm66RU','YELLOW','B',10);
-insert into cars(id,model,num,color,type,owner_id)values(10,'RENAULT','h239kp96RU','GREEN','B',10);
-insert into cars(id,model,num,color,type,owner_id)values(9,'PEUGEOT','o120ee96RU','BLACK','B',5);
-insert into cars(id,model,num,color,type,owner_id)values(8,'KIA','x450bk96RU','WHITE','C',6);
-insert into cars(id,model,num,color,type,owner_id)values(7,'FORD','b098yp196RU','GREY','C',7);
-insert into cars(id,model,num,color,type,owner_id)values(6,'SKODA','a478bx196RU','WHITE','C',8);
+insert into cars(id,name,num,color,size,owner_id)values(1,'AUDI','x123xx196RU','RED','C',1);
+insert into cars(id,name,num,color,size,owner_id)values(2,'AUDI','a234et174RU','WHITE','D',1);
+insert into cars(id,name,num,color,size,owner_id)values(3,'VW','c426ax750RU','BLACK','B',2);
+insert into cars(id,name,num,color,size,owner_id)values(4,'MB','a404aa123RU','GREY','S',3);
+insert into cars(id,name,num,color,size,owner_id)values(5,'VAZ','a109mm66RU','YELLOW','B',10);
+insert into cars(id,name,num,color,size,owner_id)values(10,'RENAULT','h239kp96RU','GREEN','B',10);
+insert into cars(id,name,num,color,size,owner_id)values(9,'PEUGEOT','o120ee96RU','BLACK','B',5);
+insert into cars(id,name,num,color,size,owner_id)values(8,'KIA','x450bk96RU','WHITE','C',6);
+insert into cars(id,name,num,color,size,owner_id)values(7,'FORD','b098yp196RU','GREY','C',7);
+insert into cars(id,name,num,color,size,owner_id)values(6,'SKODA','a478bx196RU','WHITE','C',8);
  
 insert into cities(id,name)values(1,'Yekaterinburg');
 insert into cities(id,name)values(2,'Moscow');

@@ -1,7 +1,7 @@
 package controllers;
 
-import models.AuthDao;
-import models.PersonsDao;
+import dao.AuthDao;
+import dao.PersonsDao;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;

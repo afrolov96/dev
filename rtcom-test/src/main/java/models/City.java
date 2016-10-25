@@ -1,18 +1,18 @@
 package models;
 
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class City {
-    private Integer id;
+    private int id;
     private String name;
-    private ArrayList<Person> personsList = new ArrayList<Person>();
+    private HashMap<String, Person> personsMap = new HashMap<String, Person>();
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -24,11 +24,20 @@ public class City {
         this.name = name;
     }
 
-    public ArrayList<Person> getPersonsList() {
-        return personsList;
+    public HashMap<String, Person> getPersonsMap() {
+        return personsMap;
     }
 
-    public void setPersonsList(ArrayList<Person> personsList) {
-        this.personsList = personsList;
+    public void setPersonsMap(HashMap<String, Person> personsMap) {
+        this.personsMap = personsMap;
+    }
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", personsMap=" + personsMap +
+                '}';
     }
 }

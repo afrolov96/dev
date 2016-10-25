@@ -1,4 +1,4 @@
-package models;
+package dao;
 
 import org.apache.log4j.Logger;
 
@@ -43,16 +43,18 @@ public class AuthDao {
 
     public boolean checkAuth(String user, String password) {
         boolean result = false;
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from users where user_name=? and password=?");
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from users where user_name=? and password=?")) {
             preparedStatement.setString(1, user);
             preparedStatement.setString(2, password);
-            ResultSet rs = preparedStatement.executeQuery();
-            result = rs.next();
-            rs.close();
-            preparedStatement.close();
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                result = rs.next();
+            } catch (Exception e) {
+                logger.error("checkAuth() ResultSet error: " + e.getMessage());
+            }
+
         } catch (SQLException e) {
-            logger.error("checkAuth() error: " + e.getMessage());
+            logger.error("checkAuth() PreparedStatement: " + e.getMessage());
         }
         return result;
     }
