@@ -2,20 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="766ea866-75ed-422c-8fcd-a1bbf16e66b3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/model/AuthDao.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/model/Person.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/model/PersonsDao.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/controllers/ActionFilter.java" afterPath="$PROJECT_DIR$/src/main/java/controllers/ActionFilter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/controllers/ActionServlet.java" afterPath="$PROJECT_DIR$/src/main/java/controllers/ActionServlet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/controllers/AppContextListener.java" afterPath="$PROJECT_DIR$/src/main/java/controllers/AppContextListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/controllers/LogoutFilter.java" afterPath="$PROJECT_DIR$/src/main/java/controllers/LogoutFilter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/controllers/SearchFilter.java" afterPath="$PROJECT_DIR$/src/main/java/controllers/SearchFilter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/sql/script.sql" afterPath="$PROJECT_DIR$/src/main/sql/script.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/log4j.xml" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/log4j.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/login.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/login.jsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/search.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/search.jsp" />
     </list>
     <ignored path="RTCOM-TEST.iws" />
@@ -65,7 +51,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/webapp/search.jsp">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="391">
-              <caret line="23" column="40" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
+              <caret line="23" column="41" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -90,6 +76,7 @@
         <option value="$PROJECT_DIR$/src/main/java/controllers/SearchFilter.java" />
         <option value="$PROJECT_DIR$/src/main/java/controllers/AppContextListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/controllers/ActionFilter.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/search.jsp" />
       </list>
     </option>
   </component>
@@ -761,15 +748,15 @@
       <option name="presentableId" value="Default" />
       <updated>1477318809445</updated>
       <workItem from="1477318810636" duration="3211000" />
-      <workItem from="1477413360364" duration="301000" />
+      <workItem from="1477413360364" duration="549000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3512000" />
+    <option name="totallyTimeSpent" value="3760000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1066" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1032,7 +1019,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/webapp/search.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
-          <caret line="23" column="40" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
+          <caret line="23" column="41" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
           <folding />
         </state>
       </provider>

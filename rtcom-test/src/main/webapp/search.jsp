@@ -21,7 +21,7 @@
             var city_params = [];
             $('input[id^=cities_]').each(function () {
                 var key = $(this).attr('id');
-                var val = $(this).val();
+                var val = $(this).val(); 
                 if (val != '') {
                     item = {};
                     item [key] = val;
