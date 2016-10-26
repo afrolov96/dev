@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="RTCOM-TEST:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="RTCOM-TEST.war">
-      <element id="artifact" artifact-name="RTCOM-TEST:war exploded" />
-    </root>
-  </artifact>
-</component>
