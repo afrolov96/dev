@@ -1,0 +1,9 @@
+*.class
+.metadata
+*.iml
+**/.settings
+**/.idea
+.idea
+**/target
+**/dependency-reduced-pom.xml
+**/tmp/
