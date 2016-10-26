@@ -1,6 +1,6 @@
 package controllers;
 
-import dao.AuthDao;
+import dao.DaoFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -33,12 +33,11 @@ public class SearchFilter implements Filter {
                 ((HttpServletResponse) servletResponse).sendRedirect("login.jsp");
             } else {
 
-                if (AuthDao.getInstance().checkAuth(username, password)) {
+                if (DaoFactory.getInstance().getAuthDao().checkAuth(username, password)) {
                     logger.info("Auth OK for pair user/password - " + username + " / " + password);
                     httpSession.setAttribute("sessionUser", servletRequest.getParameter("username"));
                     filterChain.doFilter(servletRequest, servletResponse);
                 } else {
-
                     logger.info("Auth FAIL for pair user/pass - " + username + " / " + password);
                     servletRequest.setAttribute("msg", "Login error.");
                     ((HttpServletResponse) servletResponse).sendRedirect("login.jsp");

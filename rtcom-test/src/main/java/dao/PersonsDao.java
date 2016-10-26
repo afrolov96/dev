@@ -2,52 +2,41 @@ package dao;
 
 import models.Car;
 import models.City;
-import util.ParamsConverter;
 import models.Person;
 import org.apache.log4j.Logger;
+import util.ParamsConverter;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PersonsDao {
-
-    private static PersonsDao instance;
-    private static DataSource dataSource;
-    private static Connection connection;
-
+    private DataSource dataSource;
+    private Connection connection;
     private static Logger logger = Logger.getLogger(PersonsDao.class);
 
-    private PersonsDao() {
-    }
-
-    public static synchronized PersonsDao getInstance() {
-        if (instance == null) {
-            try {
-                instance = new PersonsDao();
-                Context ctx = new InitialContext();
-                instance.dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/postgres");
-                connection = dataSource.getConnection();
-            } catch (NamingException e) {
-                logger.error(e.getMessage());
-            } catch (SQLException e) {
-                logger.error(e.getMessage());
-            }
+    public PersonsDao() {
+        try {
+            Context ctx = new InitialContext();
+            this.dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/postgres");
+            this.connection = dataSource.getConnection();
+        } catch (NamingException e) {
+            logger.error(e.getMessage());
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
         }
-        return instance;
-    }
-
-    public static synchronized void destroyInstance() {
-        instance = null;
-        logger.info("PersonsDao is null...");
     }
 
     public HashMap<String, City> getData(ParamsConverter converter) {
         HashMap<String, City> result = new HashMap<String, City>();
+
         StringBuilder sql = new StringBuilder();
         sql.append(" select cities.id city_id, cities.name city_name, ");
         sql.append(" persons.id person_id, persons.name person_name, persons.patronymic, persons.surname, ");
@@ -64,7 +53,7 @@ public class PersonsDao {
 
         try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
             for (int i = 0; i < converter.getValues().length; i++) {
-                ps.setString(i + 1, (converter.getKeys()[i].startsWith("person") ? "%" + converter.getValues()[i].replace("!", "!!") : converter.getValues()[i]));
+                ps.setString(i + 1, (converter.getKeys()[i].startsWith("person") ? "%" + converter.getValues()[i] + "%" : converter.getValues()[i]));
             }
 
             try (ResultSet rs = ps.executeQuery()) {

@@ -12,33 +12,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AuthDao {
-    private static AuthDao instance;
-    private static DataSource dataSource;
-    private static Connection connection;
+    private DataSource dataSource;
+    private Connection connection;
     private static Logger logger = Logger.getLogger(AuthDao.class);
 
-    private AuthDao() {
-    }
-
-    public static synchronized AuthDao getInstance() {
-        if (instance == null) {
-            try {
-                instance = new AuthDao();
-                Context ctx = new InitialContext();
-                instance.dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/postgres_sec");
-                connection = dataSource.getConnection();
-            } catch (NamingException e) {
-                logger.error(e.getMessage());
-            } catch (SQLException e) {
-                logger.error(e.getMessage());
-            }
+    public AuthDao() {
+        try {
+            Context ctx = new InitialContext();
+            this.dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/postgres_sec");
+            this.connection = dataSource.getConnection();
+        } catch (NamingException e) {
+            logger.error(e.getMessage());
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
         }
-        return instance;
-    }
-
-    public static synchronized void destroyInstance() {
-        instance = null;
-        logger.info("AuthDao is null...");
     }
 
     public boolean checkAuth(String user, String password) {
@@ -52,7 +39,6 @@ public class AuthDao {
             } catch (Exception e) {
                 logger.error("checkAuth() ResultSet error: " + e.getMessage());
             }
-
         } catch (SQLException e) {
             logger.error("checkAuth() PreparedStatement: " + e.getMessage());
         }

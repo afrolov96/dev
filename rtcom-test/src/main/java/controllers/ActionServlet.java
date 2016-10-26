@@ -1,13 +1,15 @@
 package controllers;
 
-import dao.PersonsDao;
-import models.*;
+import dao.DaoFactory;
+import models.City;
 import org.apache.log4j.Logger;
 import util.ParamsConverter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -22,11 +24,11 @@ public class ActionServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         String params = req.getParameter("params");
 
-        logger.info("Invoke getPersonsInfo request...");
+        logger.info("Invoke getData request...");
 
         ParamsConverter converter = new ParamsConverter(params);
 
-        HashMap<String, City> result = PersonsDao.getInstance().getData(converter);
+        HashMap<String, City> result = DaoFactory.getInstance().getPersonsDao().getData(converter);
         if (result.size() != 0) {
             resp.getWriter().write("</br>" + result.toString());
         } else {
