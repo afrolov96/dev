@@ -19,26 +19,26 @@ public class SearchFilter implements Filter {
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpSession httpSession = ((HttpServletRequest) servletRequest).getSession(false);
-        String username = servletRequest.getParameter("username");
+        String userName = servletRequest.getParameter("username");
         String password = servletRequest.getParameter("password");
 
         if (httpSession != null & httpSession.getAttribute("sessionUser") != null) {
-            logger.info("Auth READY for pair user/pass - " + username + " / " + password + ", sessionUser = " + httpSession.getAttribute("sessionUser"));
+            logger.info("Auth READY for pair user/pass - " + userName + " / " + password + ", sessionUser = " + httpSession.getAttribute("sessionUser"));
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
 
-            if (username == null || password == null) {
+            if (userName == null || password == null) {
                 servletRequest.setAttribute("msg", "Login error.");
                 logger.info("User or Password is empty...");
                 ((HttpServletResponse) servletResponse).sendRedirect("login.jsp");
             } else {
 
-                if (DaoFactory.getInstance().getAuthDao().checkAuth(username, password)) {
-                    logger.info("Auth OK for pair user/password - " + username + " / " + password);
+                if (DaoFactory.getInstance().getAuthDao().checkAuth(userName, password)) {
+                    logger.info("Auth OK for pair user/password - " + userName + " / " + password);
                     httpSession.setAttribute("sessionUser", servletRequest.getParameter("username"));
                     filterChain.doFilter(servletRequest, servletResponse);
                 } else {
-                    logger.info("Auth FAIL for pair user/pass - " + username + " / " + password);
+                    logger.info("Auth FAIL for pair user/pass - " + userName + " / " + password);
                     servletRequest.setAttribute("msg", "Login error.");
                     ((HttpServletResponse) servletResponse).sendRedirect("login.jsp");
                 }

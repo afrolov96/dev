@@ -4,6 +4,11 @@
 <script src="lib/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
+        $.get('ActionServlet')
+                .done(function (data) {
+                    $('#cities_name').html(data);
+                })
+
         $('#submit').click(function () {
             var params = [];
             $('input[type=text]').each(function () {
@@ -15,6 +20,13 @@
                     params.push(item);
                 }
             });
+            var val = $("#cities_name :selected").val();
+            if (val != 'xxx') {
+                var key = 'cities_name';
+                item = {};
+                item [key] = val;
+                params.push(item);
+            }
             if (params.length != 0) {
                 $.post('ActionServlet', {
                     params: JSON.stringify(params)
@@ -72,7 +84,9 @@
     <tr>
         <td>Город</td>
     </tr>
-    <td><input type="text" id="cities_name"/></td>
+    <!--td><input type="text" id="cities_name"/></td></tr-->
+    <tr>
+        <td id="cities_name"></td>
     </tr>
     </tr>
     <tr>

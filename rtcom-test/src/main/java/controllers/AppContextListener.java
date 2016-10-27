@@ -14,7 +14,6 @@ import java.io.File;
 
 @WebListener
 public class AppContextListener implements ServletContextListener {
-    static Logger logger = Logger.getLogger(AppContextListener.class);
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext ctx = servletContextEvent.getServletContext();
@@ -32,13 +31,8 @@ public class AppContextListener implements ServletContextListener {
                 BasicConfigurator.configure();
             }
         }
-
-        AuthDao.getInstance();
-        PersonsDao.getInstance();
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        AuthDao.destroyInstance();
-        PersonsDao.destroyInstance();
     }
 }

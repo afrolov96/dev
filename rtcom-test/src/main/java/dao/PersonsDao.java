@@ -6,9 +6,6 @@ import models.Person;
 import org.apache.log4j.Logger;
 import util.ParamsConverter;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,19 +16,10 @@ import java.util.Map;
 
 public class PersonsDao {
     private DataSource dataSource;
-    private Connection connection;
     private static Logger logger = Logger.getLogger(PersonsDao.class);
 
-    public PersonsDao() {
-        try {
-            Context ctx = new InitialContext();
-            this.dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/postgres");
-            this.connection = dataSource.getConnection();
-        } catch (NamingException e) {
-            logger.error(e.getMessage());
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-        }
+    public PersonsDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public HashMap<String, City> getData(ParamsConverter converter) {
@@ -46,16 +34,17 @@ public class PersonsDao {
         if (converter.getKeys().length > 0) {
             for (int i = 0; i < converter.getKeys().length; i++) {
                 sql.append(" and " + converter.getKeys()[i] + (converter.getKeys()[i].startsWith("person") ? " like ? " : " = ? "));
+                System.out.println(converter.getKeys()[i] + " = " + converter.getValues()[i]);
             }
         }
 
         logger.info("Request constructed: " + sql.toString());
 
-        try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
-            for (int i = 0; i < converter.getValues().length; i++) {
+        try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+            for (int i = 0; i < converter.getKeys().length; i++) {
                 ps.setString(i + 1, (converter.getKeys()[i].startsWith("person") ? "%" + converter.getValues()[i] + "%" : converter.getValues()[i]));
             }
-
+            System.out.println(ps);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     City city = result.get(rs.getString("city_name"));
@@ -66,7 +55,7 @@ public class PersonsDao {
                     }
 
                     HashMap<String, Person> personsMap = city.getPersonsMap();
-                    Person person = personsMap.get(rs.getString("person_name"));
+                    Person person = personsMap.get(rs.getString("person_id"));
                     if (person == null) {
                         person = new Person();
                         person.setId(rs.getInt("person_id"));
@@ -76,7 +65,7 @@ public class PersonsDao {
                     }
 
                     HashMap<String, Car> carsMap = person.getCarsMap();
-                    Car car = carsMap.get(rs.getString("car_name"));
+                    Car car = carsMap.get(rs.getString("num"));
                     if (car == null) {
                         car = new Car();
                         car.setName(rs.getString("car_name"));
@@ -85,8 +74,8 @@ public class PersonsDao {
                         car.setSize(rs.getString("size"));
                     }
 
-                    person.getCarsMap().put(car.getName(), car);
-                    city.getPersonsMap().put(person.getName(), person);
+                    person.getCarsMap().put(car.getNumber(), car);
+                    city.getPersonsMap().put(new Integer(person.getId()).toString(), person);
                     result.put(city.getName(), city);
                 }
                 logger.info("Query result : \n" + printResult(result));

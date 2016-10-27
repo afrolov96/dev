@@ -17,11 +17,11 @@ public class ActionFilter implements Filter {
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpSession httpSession = ((HttpServletRequest) servletRequest).getSession(false);
-        String username = servletRequest.getParameter("username");
+        String userName = servletRequest.getParameter("username");
         String password = servletRequest.getParameter("password");
 
         if (httpSession != null & httpSession.getAttribute("sessionUser") != null) {
-            logger.info("Auth READY for pair user/pass - " + username + " / " + password);
+            logger.info("Auth READY for pair user/pass - " + userName + " / " + password);
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             logger.info("Not auth access...");
