@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter("/LogoutFilter")
+@WebFilter("/Logout")
 public class LogoutFilter implements Filter {
     static Logger logger = Logger.getLogger(LogoutFilter.class);
 

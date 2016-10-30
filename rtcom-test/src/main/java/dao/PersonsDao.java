@@ -1,107 +1,101 @@
 package dao;
 
-import models.Car;
-import models.City;
 import models.Person;
 import org.apache.log4j.Logger;
-import util.ParamsConverter;
+import util.CarFactory;
+import util.DataSourceFactory;
+import util.PersonFactory;
+import util.QueryRequestMapper;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class PersonsDao {
-    private DataSource dataSource;
-    private static Logger logger = Logger.getLogger(PersonsDao.class);
 
-    public PersonsDao(DataSource dataSource) {
-        this.dataSource = dataSource;
+    private static volatile PersonsDao instance;
+    private static final Logger logger = Logger.getLogger(PersonsDao.class);
+
+    private PersonsDao() {
     }
 
-    public HashMap<String, City> getData(ParamsConverter converter) {
-        HashMap<String, City> result = new HashMap<String, City>();
+    public static PersonsDao getInstance() {
+        if (instance == null) {
+            synchronized (PersonsDao.class) {
+                if (instance == null) {
+                    instance = new PersonsDao();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public Iterable<Person> getData(QueryRequestMapper queryRequestMapper) {
+        ArrayList<Person> queryResult = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder();
-        sql.append(" select cities.id city_id, cities.name city_name, ");
-        sql.append(" persons.id person_id, persons.name person_name, persons.patronymic, persons.surname, ");
-        sql.append(" cars.name car_name, cars.num, cars.color, cars.size ");
-        sql.append(" from cities, persons, cars where cities.id = persons.city_id and persons.id = cars.owner_id ");
+        sql.append(" select persons.id person_id, persons.surname, persons.name person_name, persons.patronymic, ");
+        sql.append(" cities.id city_id, cities.name city_name, ");
+        sql.append(" cars.id car_id, cars.name car_name, cars.num, cars.color, cars.size ");
+        sql.append(" from cities, persons, cars where persons.city_id = cities.id and cars.owner_id = persons.id ");
+        sql.append(queryRequestMapper.getSurName() != null ? " and persons.surname like ? " : "");
+        sql.append(queryRequestMapper.getName() != null ? " and persons.name like ? " : "");
+        sql.append(queryRequestMapper.getPatronymic() != null ? " and persons.patronymic like ? " : "");
+        sql.append(queryRequestMapper.getCityId() != null ? " and persons.city_id = ? " : "");
+        sql.append(queryRequestMapper.getCarName() != null ? " and cars.name = ? " : "");
+        sql.append(queryRequestMapper.getCarNumber() != null ? " and cars.num = ? " : "");
+        sql.append(queryRequestMapper.getCarColor() != null ? " and cars.color = ? " : "");
+        sql.append(queryRequestMapper.getCarSize() != null ? " and cars.size = ? " : "");
 
-        if (converter.getKeys().length > 0) {
-            for (int i = 0; i < converter.getKeys().length; i++) {
-                sql.append(" and " + converter.getKeys()[i] + (converter.getKeys()[i].startsWith("person") ? " like ? " : " = ? "));
-                System.out.println(converter.getKeys()[i] + " = " + converter.getValues()[i]);
+        try (Connection connection = DataSourceFactory.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql.toString())) {
+
+            int i = 1;
+            if (queryRequestMapper.getSurName() != null) {
+                statement.setString(i++, "%" + queryRequestMapper.getSurName() + "%");
             }
-        }
-
-        logger.info("Request constructed: " + sql.toString());
-
-        try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement(sql.toString())) {
-            for (int i = 0; i < converter.getKeys().length; i++) {
-                ps.setString(i + 1, (converter.getKeys()[i].startsWith("person") ? "%" + converter.getValues()[i] + "%" : converter.getValues()[i]));
+            if (queryRequestMapper.getName() != null) {
+                statement.setString(i++, "%" + queryRequestMapper.getName() + "%");
             }
-            System.out.println(ps);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    City city = result.get(rs.getString("city_name"));
-                    if (city == null) {
-                        city = new City();
-                        city.setId(rs.getInt("city_id"));
-                        city.setName(rs.getString("city_name"));
-                    }
+            if (queryRequestMapper.getPatronymic() != null) {
+                statement.setString(i++, "%" + queryRequestMapper.getPatronymic() + "%");
+            }
+            if (queryRequestMapper.getCityId() != null) {
+                statement.setInt(i++, new Integer(queryRequestMapper.getCityId()).intValue());
+            }
+            if (queryRequestMapper.getCarName() != null) {
+                statement.setString(i++, queryRequestMapper.getCarName());
+            }
+            if (queryRequestMapper.getCarNumber() != null) {
+                statement.setString(i++, queryRequestMapper.getCarNumber());
+            }
+            if (queryRequestMapper.getCarColor() != null) {
+                statement.setString(i++, queryRequestMapper.getCarColor());
+            }
+            if (queryRequestMapper.getCarSize() != null) {
+                statement.setString(i++, queryRequestMapper.getCarSize());
+            }
+            logger.error("Statement = " + statement);
 
-                    HashMap<String, Person> personsMap = city.getPersonsMap();
-                    Person person = personsMap.get(rs.getString("person_id"));
-                    if (person == null) {
-                        person = new Person();
-                        person.setId(rs.getInt("person_id"));
-                        person.setName(rs.getString("person_name"));
-                        person.setPatronymic(rs.getString("patronymic"));
-                        person.setSurname(rs.getString("surname"));
-                    }
-
-                    HashMap<String, Car> carsMap = person.getCarsMap();
-                    Car car = carsMap.get(rs.getString("num"));
-                    if (car == null) {
-                        car = new Car();
-                        car.setName(rs.getString("car_name"));
-                        car.setNumber(rs.getString("num"));
-                        car.setColor(rs.getString("color"));
-                        car.setSize(rs.getString("size"));
-                    }
-
-                    person.getCarsMap().put(car.getNumber(), car);
-                    city.getPersonsMap().put(new Integer(person.getId()).toString(), person);
-                    result.put(city.getName(), city);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Person person = new Person();
+                person.setId(resultSet.getInt("person_id"));
+                int personListIndex = queryResult.indexOf(person);
+                if (personListIndex == -1) {
+                    person = PersonFactory.getInstance().getPerson(resultSet);
+                    queryResult.add(person);
+                } else {
+                    person = queryResult.get(personListIndex);
                 }
-                logger.info("Query result : \n" + printResult(result));
-            } catch (Exception e) {
-                logger.error("getData() ResultSet error: " + e.getMessage());
+                person.getCars().add(CarFactory.getInstance().getCar(resultSet));
             }
-
         } catch (SQLException e) {
-            logger.error("getData() PreparedStatement error: " + e.getMessage());
+            logger.error("getData() : ", e);
         }
-        return result;
-    }
 
-    private String printResult(HashMap<String, City> result) {
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, City> entryCity : result.entrySet()) {
-            sb.append(entryCity.getValue().getName() + "\n");
-
-            for (Map.Entry<String, Person> entryPerson : entryCity.getValue().getPersonsMap().entrySet()) {
-                sb.append("\t" + entryPerson.getValue().getSurname() + " " + entryPerson.getValue().getName() + " " + entryPerson.getValue().getSurname() + "\n");
-
-                for (Map.Entry<String, Car> entryCar : entryPerson.getValue().getCarsMap().entrySet()) {
-                    sb.append("\t\t" + entryCar.getValue().getName() + " " + entryCar.getValue().getColor() + " " + entryCar.getValue().getNumber() + "\n\n");
-                }
-            }
-        }
-        return sb.toString();
+        return queryResult;
     }
 }

@@ -1,14 +1,27 @@
 package models;
 
-
-import java.util.HashMap;
+import java.util.List;
 
 public class Person {
+
     private int id;
     private String name;
     private String patronymic;
     private String surname;
-    private HashMap<String, Car> carsMap = new HashMap<String, Car>();
+    private City city;
+    private List<Car> cars;
+
+    public Person() {
+    }
+
+    public Person(int id, String name, String patronymic, String surname, City city, List<Car> cars) {
+        this.id = id;
+        this.name = name;
+        this.patronymic = patronymic;
+        this.surname = surname;
+        this.city = city;
+        this.cars = cars;
+    }
 
     public int getId() {
         return id;
@@ -42,12 +55,20 @@ public class Person {
         this.surname = surname;
     }
 
-    public HashMap<String, Car> getCarsMap() {
-        return carsMap;
+    public City getCity() {
+        return city;
     }
 
-    public void setCarsMap(HashMap<String, Car> carsMap) {
-        this.carsMap = carsMap;
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
     }
 
     @Override
@@ -57,7 +78,18 @@ public class Person {
                 ", name='" + name + '\'' +
                 ", patronymic='" + patronymic + '\'' +
                 ", surname='" + surname + '\'' +
-                ", carsMap=" + carsMap +
+                ", city=" + city +
+                ", cars=" + cars +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Person)) {
+            return false;
+        }
+        Person person = (Person) obj;
+        return person.id == id;
     }
 }

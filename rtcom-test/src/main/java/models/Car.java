@@ -1,11 +1,28 @@
 package models;
 
-
 public class Car {
+
+    private int id;
     private String name;
     private String number;
     private String color;
     private String size;
+
+    public Car(int id, String name, String number, String color, String size) {
+        this.id = id;
+        this.name = name;
+        this.number = number;
+        this.color = color;
+        this.size = size;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -42,7 +59,8 @@ public class Car {
     @Override
     public String toString() {
         return "Car{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", number='" + number + '\'' +
                 ", color='" + color + '\'' +
                 ", size='" + size + '\'' +

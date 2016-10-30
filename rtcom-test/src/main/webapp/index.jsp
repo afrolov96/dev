@@ -4,38 +4,59 @@
 <script src="lib/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
-        $.get('ActionServlet')
+        $.get('/cities')
                 .done(function (data) {
-                    $('#cities_name').html(data);
-                })
+                    var citiesSelect = $('#city_id');
+                    for (var i = 0; i < data.length; i++) {
+                        citiesSelect.append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
+                    }
+                });
 
         $('#submit').click(function () {
-            var params = [];
+            var flag = false;
+            var params = {};
             $('input[type=text]').each(function () {
                 var key = $(this).attr('id');
                 var val = $(this).val();
                 if (val != '') {
-                    item = {};
-                    item [key] = val;
-                    params.push(item);
+                    params[key] = val;
+                    flag = true;
                 }
             });
-            var val = $("#cities_name :selected").val();
-            if (val != 'xxx') {
-                var key = 'cities_name';
-                item = {};
-                item [key] = val;
-                params.push(item);
+
+            var key = 'cities_id';
+            var val = $("#city_id :selected").val();
+            if (val.length > 0) {
+                params[key] = val;
+                flag = true;
             }
-            if (params.length != 0) {
+
+            var queryStatus = $('#queryStatus');
+            var queryResult = $('#resultTable');
+            if (flag) {
                 $.post('ActionServlet', {
                     params: JSON.stringify(params)
                 })
                         .done(function (data) {
-                            $('#searchResult').html(data)
+                            if (data.length != 0) {
+                                queryStatus.html('');
+                                queryResult.html('<tr><td>ФИО</td><td>Город</td><td>Автомобиль</td></tr>');
+                                for (var i = 0; i < data.length; i++) {
+                                    for (var k = 0; k < data[i].cars.length; k++) {
+                                        queryResult.append('<tr><td>' + data[i].surname + " " + data[i].name + " " + data[i].patronymic + '</td>'
+                                                + '<td>' + data[i].city.name + '</td>'
+                                                + '<td>' + data[i].cars[k].name + " " + data[i].cars[k].number + " " + data[i].cars[k].color + " "
+                                                + data[i].cars[k].size + '</td></tr>');
+                                    }
+                                }
+                            } else {
+                                queryResult.html('');
+                                queryStatus.html('Данные не найдены');
+                            }
                         })
             } else {
-                $('#searchResult').html("</br>Укажите условия поиска");
+                queryResult.html('');
+                queryStatus.html('Укажите условия поиска');
             }
         });
     });
@@ -84,9 +105,12 @@
     <tr>
         <td>Город</td>
     </tr>
-    <!--td><input type="text" id="cities_name"/></td></tr-->
     <tr>
-        <td id="cities_name"></td>
+        <td>
+            <select id="city_id">
+                <option value=""></option>
+            </select>
+        </td>
     </tr>
     </tr>
     <tr>
@@ -105,6 +129,9 @@
 <input type="button" id="submit" value="Найти"/>
 <br>
 
-<div id="searchResult"></div>
+<div id="queryStatus"></div>
+<br>
+<table id="resultTable">
+</table>
 </body>
 </html>

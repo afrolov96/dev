@@ -27,7 +27,7 @@
     }
 %>
 
-<form method="POST" action="search.jsp">
+<form method="POST" action="/">
     <table>
         <tr>
             <td colspan="2">Введите имя пользователя и пароль:</td>
@@ -50,7 +50,7 @@
         </tr>
     </table>
 </form>
-<div id="msg"><%= request.getAttribute("msg") != null ? request.getAttribute("msg").toString() : ""%>
+<div id="msg"><%= session.getAttribute("msg") != null ? session.getAttribute("msg").toString() : ""%>
 </div>
 
 </body>
