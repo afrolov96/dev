@@ -10,7 +10,7 @@ public class QueryRequestMapper {
     private String surName;
     private String name;
     private String patronymic;
-    private String cityId;
+    private int cityId;
     private String carName;
     private String carNumber;
     private String carColor;
@@ -28,7 +28,7 @@ public class QueryRequestMapper {
         return patronymic;
     }
 
-    public String getCityId() {
+    public int getCityId() {
         return cityId;
     }
 
@@ -55,7 +55,7 @@ public class QueryRequestMapper {
         surName = map.get("persons_surname");
         name = map.get("persons_name");
         patronymic = map.get("persons_patronymic");
-        cityId = map.get("cities_id");
+        cityId = map.get("cities_id") != null ? new Integer(map.get("cities_id")).intValue() : 0;
         carName = map.get("cars_name");
         carNumber = map.get("cars_num");
         carColor = map.get("cars_color");

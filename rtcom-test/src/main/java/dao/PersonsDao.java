@@ -11,7 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PersonsDao {
 
@@ -33,7 +34,7 @@ public class PersonsDao {
     }
 
     public Iterable<Person> getData(QueryRequestMapper queryRequestMapper) {
-        ArrayList<Person> queryResult = new ArrayList<>();
+        Map<Integer, Person> queryResult = new HashMap<>();
 
         StringBuilder sql = new StringBuilder();
         sql.append(" select persons.id person_id, persons.surname, persons.name person_name, persons.patronymic, ");
@@ -43,7 +44,7 @@ public class PersonsDao {
         sql.append(queryRequestMapper.getSurName() != null ? " and persons.surname like ? " : "");
         sql.append(queryRequestMapper.getName() != null ? " and persons.name like ? " : "");
         sql.append(queryRequestMapper.getPatronymic() != null ? " and persons.patronymic like ? " : "");
-        sql.append(queryRequestMapper.getCityId() != null ? " and persons.city_id = ? " : "");
+        sql.append(queryRequestMapper.getCityId() != 0 ? " and persons.city_id = ? " : "");
         sql.append(queryRequestMapper.getCarName() != null ? " and cars.name = ? " : "");
         sql.append(queryRequestMapper.getCarNumber() != null ? " and cars.num = ? " : "");
         sql.append(queryRequestMapper.getCarColor() != null ? " and cars.color = ? " : "");
@@ -62,8 +63,8 @@ public class PersonsDao {
             if (queryRequestMapper.getPatronymic() != null) {
                 statement.setString(i++, "%" + queryRequestMapper.getPatronymic() + "%");
             }
-            if (queryRequestMapper.getCityId() != null) {
-                statement.setInt(i++, new Integer(queryRequestMapper.getCityId()).intValue());
+            if (queryRequestMapper.getCityId() != 0) {
+                statement.setInt(i++, queryRequestMapper.getCityId());
             }
             if (queryRequestMapper.getCarName() != null) {
                 statement.setString(i++, queryRequestMapper.getCarName());
@@ -78,24 +79,31 @@ public class PersonsDao {
                 statement.setString(i++, queryRequestMapper.getCarSize());
             }
             logger.error("Statement = " + statement);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                logger.error(e);
+            }
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Person person = new Person();
-                person.setId(resultSet.getInt("person_id"));
-                int personListIndex = queryResult.indexOf(person);
-                if (personListIndex == -1) {
-                    person = PersonFactory.getInstance().getPerson(resultSet);
-                    queryResult.add(person);
-                } else {
-                    person = queryResult.get(personListIndex);
+                Person person = queryResult.computeIfAbsent(resultSet.getInt("person_id"), personId -> {
+                    try {
+                        return PersonFactory.getInstance().getPerson(resultSet);
+                    } catch (SQLException e) {
+                        logger.error(e);
+                        return null;
+                    }
+                });
+
+                if (person != null) {
+                    person.getCars().add(CarFactory.getInstance().getCar(resultSet));
                 }
-                person.getCars().add(CarFactory.getInstance().getCar(resultSet));
             }
         } catch (SQLException e) {
             logger.error("getData() : ", e);
         }
 
-        return queryResult;
+        return queryResult.values();
     }
 }
